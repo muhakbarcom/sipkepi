@@ -1,0 +1,48 @@
+.swal2-popup {
+	font-size: 1.6rem !important;
+}
+/* CSS */
+.akbr_btn {
+	border-radius: 8px;
+	border-style: none;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: inline-block;
+	font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+		sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	height: 40px;
+	line-height: 20px;
+	list-style: none;
+	margin: 0;
+	outline: none;
+	padding: 10px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+	vertical-align: baseline;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+}
+
+.akbr_primary {
+	background-color: #498ee5;
+	color: #ffffff;
+}
+
+.akbr_warning {
+	background-color: #f5a623;
+	color: #000;
+}
+.akbr_danger {
+	background-color: #cc0600;
+	color: #fff;
+}
+
+.akbr_btn:hover,
+.akbr_btn:focus {
+	opacity: 0.8;
+}
