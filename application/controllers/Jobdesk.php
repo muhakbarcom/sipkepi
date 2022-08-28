@@ -94,6 +94,48 @@ class Jobdesk extends CI_Controller
         $this->load->view('template/backend', $data);
     }
 
+    public function jobdesk_history()
+    {
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'jobdesk_history?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'jobdesk_history?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'jobdesk_history';
+            $config['first_url'] = base_url() . 'jobdesk_history';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        if ($this->ion_auth->in_group("Human Resource")) {
+            $config['total_rows'] = $this->Jobdesk_model->total_rows_hr_history($q);
+            $jobdesk = $this->Jobdesk_model->get_limit_data_hr_history($config['per_page'], $start, $q);
+        } else {
+            $config['total_rows'] = $this->Jobdesk_model->total_rows_pegawai_history($q);
+            $jobdesk = $this->Jobdesk_model->get_limit_data_pegawai_history($config['per_page'], $start, $q);
+        }
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+
+        $data = array(
+            'jobdesk_data' => $jobdesk,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
+        );
+        $data['title'] = 'History Pengumpulan';
+        $data['subtitle'] = '';
+        $data['crumb'] = [
+            'Jobdesk' => '',
+        ];
+
+        $data['page'] = 'jobdesk/jobdesk_list_history';
+        $this->load->view('template/backend', $data);
+    }
+
     public function upload_jobdesk()
     {
         if (isset($_FILES['file_jobdesk'])) {
@@ -115,25 +157,35 @@ class Jobdesk extends CI_Controller
                 //print_r($file_jobdesk_name);
                 //die;
             }
-            $this->db->set('file', $file_jobdesk_name);
-            $id_jobdesk = $this->input->post('id_jobdesk');
-            $this->db->where('id_jobdesk', $id_jobdesk);
-            $this->db->update('jobdesk');
+            // $this->db->set('file', $file_jobdesk_name);
+            // $id_jobdesk = $this->input->post('id_jobdesk');
+            // $this->db->where('id_jobdesk', $id_jobdesk);
+            // $this->db->update('jobdesk');
+
+            $data_input_history = array(
+                'id_jobdesk' => $this->input->post('id_jobdesk'),
+                'file' => $file_jobdesk_name,
+                'id_pegawai' => $this->session->userdata('user_id'),
+                'tanggal_pengumpulan' => date('Y-m-d'),
+            );
+            $this->db->insert('history_pengumpulan', $data_input_history);
             $this->session->set_flashdata('success', 'Upload Berhasil');
-            redirect('jobdesk/pegawai');
+            redirect('jobdesk/jobdesk_history');
         }
     }
 
     public function komentar()
     {
         $id_jobdesk = $this->input->post('id_jobdesk');
+        $id_history_pengumpulan = $this->input->post('id_history_pengumpulan');
         $komentar = $this->input->post('komentar');
         $data = array(
             'komentar' => $komentar
         );
         $this->db->where('id_jobdesk', $id_jobdesk);
-        $this->db->update('jobdesk', $data);
-        redirect('jobdesk/read/' . $id_jobdesk);
+        $this->db->where('id', $id_history_pengumpulan);
+        $this->db->update('history_pengumpulan', $data);
+        redirect('jobdesk/read_history/' . $id_history_pengumpulan);
     }
 
     public function read($id)
@@ -152,7 +204,7 @@ class Jobdesk extends CI_Controller
                 // 'id_user' => $row->id_user,
                 'masa_tenggat' => $row->masa_tenggat,
             );
-            $data['pegawai'] = $this->db->query("SELECT id_user from jobdesk_pegawai where id_jobdesk =  $row->id_jobdesk")->result();;
+            $data['pegawai'] = $this->db->query("SELECT id_user from jobdesk_pegawai where id_jobdesk =  $row->id_jobdesk")->result();
             $data['title'] = 'Jobdesk';
             $data['subtitle'] = '';
             $data['crumb'] = [
@@ -160,6 +212,38 @@ class Jobdesk extends CI_Controller
             ];
 
             $data['page'] = 'jobdesk/jobdesk_read';
+            $this->load->view('template/backend', $data);
+        } else {
+            $this->session->set_flashdata('error', 'Record Not Found');
+            redirect(site_url('jobdesk'));
+        }
+    }
+
+    public function read_history($id)
+    {
+        $row = $this->db->query("SELECT h.*,j.nama_jobdesk,j.status,j.tanggal_dibuat,j.tanggal_selesai,j.masa_tenggat from history_pengumpulan h join jobdesk j on (h.id_jobdesk=j.id_jobdesk) where h.id = $id")->row();
+
+        if ($row) {
+            $data = array(
+                'id_jobdesk' => $row->id_jobdesk,
+                'id_history_pengumpulan' => $row->id,
+                'komentar' => $row->komentar,
+                'nama_jobdesk' => $row->nama_jobdesk,
+                'status' => $row->status,
+                'file' => $row->file,
+                'tanggal_dibuat' => $row->tanggal_dibuat,
+                'tanggal_selesai' => $row->tanggal_selesai,
+                // 'id_user' => $row->id_user,
+                'masa_tenggat' => $row->masa_tenggat,
+            );
+            $data['pegawai'] = $this->db->query("SELECT id_user from jobdesk_pegawai where id_jobdesk =  $row->id_jobdesk")->result();
+            $data['title'] = 'Jobdesk';
+            $data['subtitle'] = '';
+            $data['crumb'] = [
+                'Dashboard' => '',
+            ];
+
+            $data['page'] = 'jobdesk/jobdesk_read_history';
             $this->load->view('template/backend', $data);
         } else {
             $this->session->set_flashdata('error', 'Record Not Found');

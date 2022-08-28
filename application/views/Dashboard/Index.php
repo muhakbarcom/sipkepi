@@ -126,7 +126,13 @@
   </div>
   <!-- /.col -->
 </div>
-
+<div class="row">
+  <?php if ($jumlah_jobdesk_belum_selesai > 0 and $this->ion_auth->in_group("Pegawai")) : ?>
+    <div class="col-md-12">
+      <div class="alert alert-danger">Ada <b><?= $jumlah_jobdesk_belum_selesai; ?></b> jobdesk yang belum diselesaikan! <a href="<?= base_url('Jobdesk/pegawai'); ?>" class="alert-link" style="color:white">Cek disini</a></div>
+    </div>
+  <?php endif ?>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="box">

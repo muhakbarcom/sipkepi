@@ -100,15 +100,35 @@ class Penilaian extends CI_Controller
         $this->load->view('template/backend', $data);
     }
 
+    public function get_pegawai_by_id_jobdesk()
+    {
+        $id_jobdesk = $this->input->post('id_jobdesk');
+        $pegawai = $this->db->query("SELECT jp.id_user,u.first_name,u.last_name from jobdesk_pegawai jp join users u on (jp.id_user=u.id) where jp.id_jobdesk = '$id_jobdesk'")->result();
+        // cek $pegawai yang belum ada di tabel penilaian
+        foreach ($pegawai as $value) {
+            $cek = $this->db->query("SELECT * from penilaian where id_jobdesk='$id_jobdesk' AND id_pegawai = '$value->id_user'")->num_rows();
+            if ($cek == 0) {
+                $data[] = $value;
+            }
+        }
+        echo json_encode($data);
+    }
+
     public function create_action()
     {
-        $this->_rules();
+        $this->form_validation->set_rules('nilai', 'nilai', 'trim|required');
+        $this->form_validation->set_rules('id_pegawai', 'Pegawai', 'trim|required');
+        $this->form_validation->set_rules('id_jobdesk', 'Jobdesk', 'trim|required');
+
+        $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->create();
+            $this->set_flashdata('error', validation_errors());
+            redirect(site_url('Penilaian/create'));
         } else {
             $data = array(
                 'id_jobdesk' => $this->input->post('id_jobdesk', TRUE),
+                'id_pegawai' => $this->input->post('id_pegawai', TRUE),
                 'nilai' => $this->input->post('nilai', TRUE),
                 'tanggal_penilaian' => date('Y-m-d'),
             );

@@ -80,9 +80,11 @@
                                             echo anchor(site_url('jobdesk/selesai/' . $jobdesk->id_jobdesk), '<i class="fa fa-check"></i>', 'class="btn btn-xs btn-success"  data-toggle="tooltip" title="Detail"');
                                             echo ' ';
                                         }
-                                        echo anchor(site_url('jobdesk/update/' . $jobdesk->id_jobdesk), ' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"');
-                                        echo ' ';
-                                        echo anchor(site_url('jobdesk/delete/' . $jobdesk->id_jobdesk), ' <i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'jobdesk/delete/' . $jobdesk->id_jobdesk . '\')"  data-toggle="tooltip" title="Delete" ');
+                                        if ($jobdesk->status != 1) {
+                                            echo anchor(site_url('jobdesk/update/' . $jobdesk->id_jobdesk), ' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"');
+                                            echo ' ';
+                                        }
+                                        // echo anchor(site_url('jobdesk/delete/' . $jobdesk->id_jobdesk), ' <i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'jobdesk/delete/' . $jobdesk->id_jobdesk . '\')"  data-toggle="tooltip" title="Delete" ');
                                     }
                                     ?>
                                 </td>

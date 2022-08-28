@@ -51,6 +51,38 @@ class Jobdesk_model extends CI_Model
         return $this->db->get($this->table)->num_rows();
     }
 
+    function total_rows_pegawai_history($q = NULL)
+    {
+        $this->db->where('id_pegawai', $this->session->userdata('user_id'));
+        $this->db->order_by('id', $this->order);
+        return $this->db->get('history_pengumpulan')->num_rows();
+    }
+
+    function get_limit_data_pegawai_history($limit, $start = 0, $q = NULL)
+    {
+        $this->db->select('history_pengumpulan.*, jobdesk.nama_jobdesk');
+
+        $this->db->where('history_pengumpulan.id_pegawai', $this->session->userdata('user_id'));
+        $this->db->join('jobdesk', 'history_pengumpulan.id_jobdesk = jobdesk.id_jobdesk', 'left');
+
+        $this->db->order_by('history_pengumpulan.id', $this->order);
+        return $this->db->get('history_pengumpulan')->result();
+    }
+
+    function total_rows_hr_history($q = NULL)
+    {
+        $this->db->order_by('id', $this->order);
+        return $this->db->get('history_pengumpulan')->num_rows();
+    }
+
+    function get_limit_data_hr_history($limit, $start = 0, $q = NULL)
+    {
+        $this->db->select('history_pengumpulan.*, jobdesk.nama_jobdesk');
+        $this->db->join('jobdesk', 'history_pengumpulan.id_jobdesk = jobdesk.id_jobdesk', 'left');
+        $this->db->order_by('history_pengumpulan.id', $this->order);
+        return $this->db->get('history_pengumpulan')->result();
+    }
+
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL)
     {
@@ -125,6 +157,17 @@ class Jobdesk_model extends CI_Model
         $this->db->order_by('jobdesk.id_jobdesk', $this->order);
         $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
+    }
+
+    function get_limit_data_pegawai_dashboard()
+    {
+        $this->db->join('jobdesk_pegawai', 'jobdesk.id_jobdesk=jobdesk_pegawai.id_jobdesk');
+        $this->db->where('jobdesk_pegawai.id_user', $this->session->userdata('user_id'));
+        $this->db->where('jobdesk.status', 0);
+
+        $this->db->like('jobdesk.id_jobdesk');
+        $this->db->order_by('jobdesk.id_jobdesk', $this->order);
+        return $this->db->get($this->table)->num_rows();
     }
 
     // insert data

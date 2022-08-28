@@ -25,6 +25,7 @@ class Dashboard extends CI_Controller
 		$data['lineChartMonth'] = substr($bulan->tanggal, 0, 4);
 		$data['lineChartDay'] = substr($bulan->tanggal, 5, 6);
 
+		$data['jumlah_jobdesk_belum_selesai'] = $this->Jobdesk_model->get_limit_data_pegawai_dashboard();
 		$data['page'] = 'Dashboard/Index';
 		$this->load->view('template/backend', $data);
 	}

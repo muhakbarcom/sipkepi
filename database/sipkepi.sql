@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 28 Agu 2022 pada 00.35
--- Versi server: 10.4.14-MariaDB
--- Versi PHP: 7.2.34
+-- Generation Time: Aug 28, 2022 at 04:29 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `groups`
+-- Table structure for table `groups`
 --
 
 CREATE TABLE `groups` (
@@ -34,7 +34,7 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `groups`
+-- Dumping data for table `groups`
 --
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `groups_menu`
+-- Table structure for table `groups_menu`
 --
 
 CREATE TABLE `groups_menu` (
@@ -54,7 +54,7 @@ CREATE TABLE `groups_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `groups_menu`
+-- Dumping data for table `groups_menu`
 --
 
 INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
@@ -101,12 +101,37 @@ INSERT INTO `groups_menu` (`id_groups`, `id_menu`) VALUES
 (2, 3),
 (6, 3),
 (2, 113),
-(6, 108);
+(6, 108),
+(2, 114),
+(6, 114);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jobdesk`
+-- Table structure for table `history_pengumpulan`
+--
+
+CREATE TABLE `history_pengumpulan` (
+  `id` int(11) NOT NULL,
+  `id_jobdesk` int(11) NOT NULL,
+  `id_pegawai` int(11) NOT NULL,
+  `file` text NOT NULL,
+  `komentar` text DEFAULT NULL,
+  `tanggal_pengumpulan` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `history_pengumpulan`
+--
+
+INSERT INTO `history_pengumpulan` (`id`, `id_jobdesk`, `id_pegawai`, `file`, `komentar`, `tanggal_pengumpulan`) VALUES
+(1, 36, 17, 'Tugas_PJOK.docx', 'ok', '2022-08-28'),
+(2, 36, 16, 'Dummy_PDF.pdf', 'okk', '2022-08-28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobdesk`
 --
 
 CREATE TABLE `jobdesk` (
@@ -121,7 +146,7 @@ CREATE TABLE `jobdesk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `jobdesk`
+-- Dumping data for table `jobdesk`
 --
 
 INSERT INTO `jobdesk` (`id_jobdesk`, `nama_jobdesk`, `status`, `tanggal_dibuat`, `tanggal_selesai`, `masa_tenggat`, `file`, `komentar`) VALUES
@@ -137,12 +162,13 @@ INSERT INTO `jobdesk` (`id_jobdesk`, `nama_jobdesk`, `status`, `tanggal_dibuat`,
 (32, 'SPRINT 40 Mengindentifikasi E-commerce', 0, '2022-09-24', NULL, '2022-09-30', '', NULL),
 (33, 'SPRINT 41 Mengidentifikasi Laporan', 1, '2022-09-24', '2022-08-24', '2022-10-31', 'BAB_VI.docx', 'Ada kesalahan di bagian Pengecekan anggotaan'),
 (34, 'SPRINT 42 Mengidentifikasi Laporan Autientifikasi', 1, '2022-08-24', '2022-08-24', '2022-09-30', 'BAB_VI1.docx', 'asdasasasasdas'),
-(35, 'SPRINT 40 Mengindentifikasi E-commerce', 1, '2022-08-24', '2022-08-24', '2022-10-30', 'BAB_VI2.docx', 'di bagian IV adayang kurang. tolong di perbaikin');
+(35, 'SPRINT 40 Mengindentifikasi E-commerce', 1, '2022-08-24', '2022-08-24', '2022-10-30', 'BAB_VI2.docx', 'di bagian IV adayang kurang. tolong di perbaikin'),
+(36, 'Pembuatan Laporan Akhir Perusahaan', 1, '2022-08-28', '2022-08-28', '2022-08-30', '', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jobdesk_pegawai`
+-- Table structure for table `jobdesk_pegawai`
 --
 
 CREATE TABLE `jobdesk_pegawai` (
@@ -152,7 +178,7 @@ CREATE TABLE `jobdesk_pegawai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `jobdesk_pegawai`
+-- Dumping data for table `jobdesk_pegawai`
 --
 
 INSERT INTO `jobdesk_pegawai` (`id`, `id_jobdesk`, `id_user`) VALUES
@@ -189,13 +215,17 @@ INSERT INTO `jobdesk_pegawai` (`id`, `id_jobdesk`, `id_user`) VALUES
 (79, 34, 15),
 (80, 35, 18),
 (81, 35, 16),
-(82, 35, 15);
+(82, 35, 15),
+(83, 36, 17),
+(84, 36, 16),
+(85, 36, 15),
+(86, 36, 11);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `laporan_jobdesk`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `laporan_jobdesk`
+-- (See below for the actual view)
 --
 CREATE TABLE `laporan_jobdesk` (
 `tanggal` varchar(7)
@@ -207,7 +237,7 @@ CREATE TABLE `laporan_jobdesk` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `menu`
+-- Table structure for table `menu`
 --
 
 CREATE TABLE `menu` (
@@ -223,7 +253,7 @@ CREATE TABLE `menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `menu`
+-- Dumping data for table `menu`
 --
 
 INSERT INTO `menu` (`id_menu`, `sort`, `level`, `parent_id`, `icon`, `label`, `link`, `id`, `id_menu_type`) VALUES
@@ -243,12 +273,13 @@ INSERT INTO `menu` (`id_menu`, `sort`, `level`, `parent_id`, `icon`, `label`, `l
 (110, 5, 2, 92, 'fas fa-book', 'Kelola penilaian', 'Penilaian', '#', 1),
 (111, 2, 2, 1, 'fas fa-file-code', 'Kelola laporan', 'Laporan', '#', 1),
 (112, 9, 1, 0, 'fas fa-allergies', 'hidden', '#', '#', 1),
-(113, 1, 2, 1, 'fab fa-replyd', 'Jobdesk', 'jobdesk/pegawai', '#', 1);
+(113, 1, 2, 1, 'fab fa-replyd', 'Jobdesk', 'jobdesk/pegawai', '#', 1),
+(114, 1, 2, 1, 'fab fa-affiliatetheme', 'History Pengumpulan Jobde', 'Jobdesk/jobdesk_history', '#', 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `menu_type`
+-- Table structure for table `menu_type`
 --
 
 CREATE TABLE `menu_type` (
@@ -257,7 +288,7 @@ CREATE TABLE `menu_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `menu_type`
+-- Dumping data for table `menu_type`
 --
 
 INSERT INTO `menu_type` (`id_menu_type`, `type`) VALUES
@@ -266,31 +297,28 @@ INSERT INTO `menu_type` (`id_menu_type`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `penilaian`
+-- Table structure for table `penilaian`
 --
 
 CREATE TABLE `penilaian` (
   `id_penilaian` int(11) NOT NULL,
   `id_jobdesk` int(11) NOT NULL,
+  `id_pegawai` int(11) NOT NULL,
   `nilai` int(11) NOT NULL,
   `tanggal_penilaian` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `penilaian`
+-- Dumping data for table `penilaian`
 --
 
-INSERT INTO `penilaian` (`id_penilaian`, `id_jobdesk`, `nilai`, `tanggal_penilaian`) VALUES
-(6, 24, 80, '2022-08-16'),
-(7, 30, 80, '2022-08-16'),
-(8, 28, 90, '2022-08-16'),
-(9, 33, 88, '2022-08-24'),
-(10, 34, 80, '2022-08-24');
+INSERT INTO `penilaian` (`id_penilaian`, `id_jobdesk`, `id_pegawai`, `nilai`, `tanggal_penilaian`) VALUES
+(12, 36, 17, 12, '2022-08-28');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `setting`
+-- Table structure for table `setting`
 --
 
 CREATE TABLE `setting` (
@@ -301,7 +329,7 @@ CREATE TABLE `setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `setting`
+-- Dumping data for table `setting`
 --
 
 INSERT INTO `setting` (`id`, `kode`, `nama`, `nilai`) VALUES
@@ -310,7 +338,7 @@ INSERT INTO `setting` (`id`, `kode`, `nama`, `nilai`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -325,7 +353,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `active`, `first_name`, `last_name`, `phone`, `image`) VALUES
@@ -345,7 +373,7 @@ INSERT INTO `users` (`id`, `password`, `email`, `active`, `first_name`, `last_na
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users_groups`
+-- Table structure for table `users_groups`
 --
 
 CREATE TABLE `users_groups` (
@@ -355,7 +383,7 @@ CREATE TABLE `users_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `users_groups`
+-- Dumping data for table `users_groups`
 --
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
@@ -375,66 +403,72 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `laporan_jobdesk`
+-- Structure for view `laporan_jobdesk`
 --
 DROP TABLE IF EXISTS `laporan_jobdesk`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `laporan_jobdesk`  AS SELECT date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') AS `tanggal`, (select count(0) from `jobdesk` where `jobdesk`.`status` = 1 and date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') = `tanggal`) AS `js`, (select count(0) from `jobdesk` where `jobdesk`.`status` = 0 and date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') = `tanggal`) AS `jbs`, (select `js` + `jbs`) AS `jml` FROM `jobdesk` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `laporan_jobdesk`  AS  select date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') AS `tanggal`,(select count(0) from `jobdesk` where `jobdesk`.`status` = 1 and date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') = `tanggal`) AS `js`,(select count(0) from `jobdesk` where `jobdesk`.`status` = 0 and date_format(`jobdesk`.`tanggal_dibuat`,'%Y-%m') = `tanggal`) AS `jbs`,(select `js` + `jbs`) AS `jml` from `jobdesk` ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `groups`
+-- Indexes for table `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `jobdesk`
+-- Indexes for table `history_pengumpulan`
+--
+ALTER TABLE `history_pengumpulan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jobdesk`
 --
 ALTER TABLE `jobdesk`
   ADD PRIMARY KEY (`id_jobdesk`);
 
 --
--- Indeks untuk tabel `jobdesk_pegawai`
+-- Indexes for table `jobdesk_pegawai`
 --
 ALTER TABLE `jobdesk_pegawai`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `menu`
+-- Indexes for table `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id_menu`);
 
 --
--- Indeks untuk tabel `menu_type`
+-- Indexes for table `menu_type`
 --
 ALTER TABLE `menu_type`
   ADD PRIMARY KEY (`id_menu_type`);
 
 --
--- Indeks untuk tabel `penilaian`
+-- Indexes for table `penilaian`
 --
 ALTER TABLE `penilaian`
   ADD PRIMARY KEY (`id_penilaian`);
 
 --
--- Indeks untuk tabel `setting`
+-- Indexes for table `setting`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users_groups`
+-- Indexes for table `users_groups`
 --
 ALTER TABLE `users_groups`
   ADD PRIMARY KEY (`id`),
@@ -443,69 +477,75 @@ ALTER TABLE `users_groups`
   ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `groups`
+-- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT untuk tabel `jobdesk`
+-- AUTO_INCREMENT for table `history_pengumpulan`
+--
+ALTER TABLE `history_pengumpulan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `jobdesk`
 --
 ALTER TABLE `jobdesk`
-  MODIFY `id_jobdesk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_jobdesk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT untuk tabel `jobdesk_pegawai`
+-- AUTO_INCREMENT for table `jobdesk_pegawai`
 --
 ALTER TABLE `jobdesk_pegawai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
--- AUTO_INCREMENT untuk tabel `menu`
+-- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
--- AUTO_INCREMENT untuk tabel `menu_type`
+-- AUTO_INCREMENT for table `menu_type`
 --
 ALTER TABLE `menu_type`
   MODIFY `id_menu_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `penilaian`
+-- AUTO_INCREMENT for table `penilaian`
 --
 ALTER TABLE `penilaian`
-  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `setting`
+-- AUTO_INCREMENT for table `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT untuk tabel `users_groups`
+-- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `users_groups`
+-- Constraints for table `users_groups`
 --
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
